@@ -1,0 +1,12 @@
+body{
+    background: rgb(27, 0, 25);
+    background-size: cover;
+}
+.jumbotron{
+    background:cornflowerblue;
+    color:silver;
+}
+table{
+    background:cornflowerblue;
+    color:crimson;
+}
