@@ -1,4 +1,5 @@
 // Initialize Firebase
+
 var config = {
   apiKey: "AIzaSyD7SlfClHfWrphIC66N-5iWK81Yu7emTJY",
   authDomain: "train-schedule-91ddf.firebaseapp.com",
@@ -9,7 +10,31 @@ var config = {
 };
 firebase.initializeApp(config);
 
-  var database = firebase.database();
+var database = firebase.database();
+
+var nextTrain, 
+currentTime, 
+minsAway;
+
+var timeLogic = function(firstTrain, frequency) {
+  var oneYearAgo = moment(firstTrain, "HH:mm").subtract(1, "years");
+  // console.log(oneYearAgo);
+
+  currentTime = moment();
+  console.log( "CURRENT TIME: " + moment(currentTime).format( "hh:mm"));
+
+  var diffTime = moment().diff(moment(oneYearAgo), "days");
+  // console.log( "DIFFERENC IN TIME:" + diffTime);
+
+  var tRemainder = diffTime % frequency;
+  // console.log(tRemainder);
+
+  minsAway = frequency - tRemainder;
+  // console.log( "MINUTES TILL TRAIN: " + minsAway);
+
+  nextTrain = moment().add(minsAway, "minutes");
+  // console.log( "ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));//
+};
 
   $( "#add-traintime-btn" ).on( "click", function(event){
     event.preventDefault();
@@ -54,26 +79,7 @@ firebase.initializeApp(config);
     console.log(firstTrain);
     console.log(frequency);
 
-    var oneYearAgo = moment(firstTrain, "HH:mm").subtract(1, "years");
-        console.log(oneYearAgo);
-
-        var currentTime = moment();
-        console.log( "CURRENT TIME: " + moment(currentTime).format( "hh:mm"));
-
-        var diffTime = moment().diff(moment(oneYearAgo), "days");
-        console.log( "DIFFERENC IN TIME:" + diffTime);
-
-        var tRemainder = diffTime % frequency;
-        console.log(tRemainder);
-
-        var minsAway = frequency - tRemainder;
-        console.log( "MINUTES TILL TRAIN: " + minsAway);
-
-        var nextTrain = moment().add(minsAway, "minutes");
-        console.log( "ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
-
-    
+    timeLogic(firstTrain, frequency);
 
     var newRow = $( "<tr>" ).append(
       $( "<td>" ).text(trainName),
@@ -85,7 +91,6 @@ firebase.initializeApp(config);
     );
     
     $( "#train-table > tbody").append(newRow);
-  
 
 
     // var date = "2018-12-24";
